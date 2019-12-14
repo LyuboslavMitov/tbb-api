@@ -17,8 +17,8 @@ public class RoutesService {
     @Autowired
     private RoutesRepository repo;
 
-    public List<Route> findAll() {
-        return repo.findAll();
+    public List<Route> findAllCompanyRoutes(String companyId) {
+        return repo.findAllByCompanyId(companyId);
     }
 
     public Route findById(Long routeId) {

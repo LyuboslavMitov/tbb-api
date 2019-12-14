@@ -17,8 +17,8 @@ public class TicketsService {
     @Autowired
     private TicketsRepository repo;
 
-    public List<Ticket> findAll() {
-        return repo.findAll();
+    public List<Ticket> findAllByUserId(String userId) {
+        return repo.findAllByUserId(userId);
     }
 
     public Ticket findById(Long ticketId) {

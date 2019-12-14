@@ -27,8 +27,9 @@ public class TicketsController {
     private UsersService usersService;
 
     @GetMapping
-    public List<Ticket> getTickets() {
-        return ticketsService.findAll();
+    public List<Ticket> getTickets(Principal principal) {
+        User user = usersService.findByUsername(principal.getName());
+        return ticketsService.findAllByUserId(user.getId());
     }
 
     @GetMapping("{id}") //TODO:Remove principal, only debugging purposes

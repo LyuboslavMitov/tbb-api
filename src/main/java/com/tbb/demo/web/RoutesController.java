@@ -27,8 +27,9 @@ public class RoutesController {
     private UsersService usersService;
 
     @GetMapping
-    public List<Route> getRoutes() {
-        return routesService.findAll();
+    public List<Route> getRoutes(Principal principal) {
+        User user = usersService.findByUsername(principal.getName());
+        return routesService.findAllCompanyRoutes(user.getId());
     }
 
     @GetMapping("{id}")
