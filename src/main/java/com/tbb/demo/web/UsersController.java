@@ -32,11 +32,11 @@ public class UsersController {
 //        return usersService.findAll();
 //    }
 //
-//    @GetMapping("{id}")
-//    public User getUserById(@PathVariable("id") String userId) {
-//        validatePermissions(userId);
-//        return usersService.findById(userId);
-//    }
+    @GetMapping("{id}")
+    public User getUserById(@PathVariable("id") String userId) {
+        validatePermissions(userId);
+        return usersService.findById(userId);
+    }
 //
 //    @PostMapping
 //    public ResponseEntity<User> addUser(@Valid @RequestBody User user, BindingResult bindingResult) {
@@ -56,15 +56,11 @@ public class UsersController {
 //                .body(created);
 //    }
 //
-//    @PutMapping("{id}")
-//    public User update(@PathVariable String id, @Valid @RequestBody User user) {
-//        if (!id.equals(user.getId())) {
-//            throw new InvalidEntityException(
-//                    String.format("Entity ID='%s' is different from URL resource ID='%s'", user.getId(), id));
-//        }
-//        validatePermissions(user.getId());
-//        return usersService.update(user);
-//    }
+    @PutMapping("{id}")
+    public User update(@PathVariable String id, @Valid @RequestBody User user) {
+        validatePermissions(user.getId());
+        return usersService.update(user);
+    }
 //
 //
 //    @DeleteMapping("{id}")
@@ -74,13 +70,13 @@ public class UsersController {
 //        return usersService.remove(id);
 //    }
 //
-//    private void validatePermissions(String id) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        User searchedUser = usersService.findById(id);
-//        if (!isLoggedInUserAdmin() && !authentication.getPrincipal().equals(searchedUser.getUsername())) {
-//            throw new InvalidEntityException("You do not delete other users data");
-//        }
-//    }
+    private void validatePermissions(String id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User searchedUser = usersService.findById(id);
+        if (!authentication.getPrincipal().equals(searchedUser.getUsername())) {
+            throw new InvalidEntityException("You do not delete other users data");
+        }
+    }
 //
 //    private boolean isLoggedInUserAdmin() {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
