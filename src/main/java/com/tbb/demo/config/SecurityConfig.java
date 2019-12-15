@@ -25,6 +25,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -33,10 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and()
+        http.cors().disable()
                 .csrf().disable()
                 .authorizeRequests()
                 //TODO:Change this
+                .antMatchers(HttpMethod.OPTIONS,"/api/**").permitAll()
                 .antMatchers("/api/public").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -59,23 +63,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(username -> usersService.findByUsername(username));
 
     }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-
-        return source;
-    }
-//    @Bean
-//    public UserDetailsService userDetailsService(UsersService usersService) {
-//        return username -> {
-//            try {
-//                return usersService.findByUsername(username);
-//            } catch (NonexisitngEntityException ex) {
-//                throw new UsernameNotFoundException(ex.getMessage(), ex);
-//            }
-//        };
-//    }
-
 }
