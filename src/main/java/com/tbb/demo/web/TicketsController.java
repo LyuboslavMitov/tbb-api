@@ -6,6 +6,7 @@ import com.tbb.demo.exception.InvalidEntityException;
 import com.tbb.demo.model.Ticket;
 import com.tbb.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/tickets")
 public class TicketsController {
@@ -37,7 +39,13 @@ public class TicketsController {
         validateIsOwnerOfTicket(ticketId);
         return ticketsService.findById(ticketId);
     }
-
+    @RequestMapping(
+            value = "/**",
+            method = RequestMethod.OPTIONS
+    )
+    public ResponseEntity handle() {
+        return new ResponseEntity(HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<Ticket> addTicket(@Valid @RequestBody Ticket ticket, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasFieldErrors()) {

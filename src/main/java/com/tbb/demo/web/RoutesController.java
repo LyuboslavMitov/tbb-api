@@ -6,6 +6,7 @@ import com.tbb.demo.exception.InvalidEntityException;
 import com.tbb.demo.model.Route;
 import com.tbb.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/routes")
 public class RoutesController {
@@ -74,7 +76,13 @@ public class RoutesController {
         validateIsOwnerOfRoute(id);
         return routesService.remove(id);
     }
-
+    @RequestMapping(
+            value = "/**",
+            method = RequestMethod.OPTIONS
+    )
+    public ResponseEntity handle() {
+        return new ResponseEntity(HttpStatus.OK);
+    }
     private void validateIsOwnerOfRoute(String routeId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Route route = routesService.findById(routeId);
