@@ -66,20 +66,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .compact();
         response.setContentType("application/json");
         response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
-        String json = null;
+        Token responseObject = new Token(token);
         try {
-            String responseBody = "{ token:" + token + "}";
-            json = new ObjectMapper().writeValueAsString(responseBody);
-        } catch (JsonProcessingException e) {
+            new ObjectMapper().writeValue(response.getWriter(), responseObject);
+            response.flushBuffer();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        if (json != null) {
-            try {
-                response.getWriter().write(json);
-                response.flushBuffer();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
     }
 }
