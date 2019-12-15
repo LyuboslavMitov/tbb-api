@@ -21,7 +21,7 @@ public class TicketsService {
         return repo.findAllByUserId(userId);
     }
 
-    public Ticket findById(Long ticketId) {
+    public Ticket findById(String ticketId) {
         return repo.findById(ticketId).orElseThrow(() -> new NonexisitngEntityException(
                 String.format("Ticket with ID='%s' does not exist.", ticketId)));
     }
@@ -39,7 +39,7 @@ public class TicketsService {
         return repo.save(ticket);
     }
 
-    public Ticket remove(Long ticketId) {
+    public Ticket remove(String ticketId) {
         Optional<Ticket> old = repo.findById(ticketId);
         log.info("!!!!!! TicketID = " + ticketId);
         if (!old.isPresent()) {

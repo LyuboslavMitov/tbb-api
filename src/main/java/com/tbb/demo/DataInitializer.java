@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -37,13 +38,13 @@ public class DataInitializer implements ApplicationRunner {
             usersService.add(travelerUser);
             usersService.add(companyUser);
 
-            Route route = new Route(1234567L, "Vidin", "Sofia",
-                    Collections.singletonList(""), "5.5h",
+            Route route = new Route(UUID.randomUUID().toString(), "Vidin", "Sofia",
+                    "", "5.5h",
                     25d, 200, companyUser.getFirstName(), companyUser.getId()
             );
             routesService.add(route);
 
-            Ticket ticket = new Ticket(123456L, "Vidin", "Sofia", Collections.singletonList(""),
+            Ticket ticket = new Ticket(UUID.randomUUID().toString(), "Vidin", "Sofia", "",
                     "5.5h", 25d, "200", companyUser.getUsername(), LocalDateTime.now().toString(),
                     travelerUser.getId()
             );

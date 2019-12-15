@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-public interface RoutesRepository extends MongoRepository<Route,Long> {
+public interface RoutesRepository extends MongoRepository<Route,String> {
     List<Route> findAllByCompanyId(String companyId);
 }

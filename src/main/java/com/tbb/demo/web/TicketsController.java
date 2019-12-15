@@ -33,7 +33,7 @@ public class TicketsController {
     }
 
     @GetMapping("{id}") //TODO:Remove principal, only debugging purposes
-    public Ticket getTicketById(@PathVariable("id") Long ticketId, Principal principal) {
+    public Ticket getTicketById(@PathVariable("id") String ticketId, Principal principal) {
         validateIsOwnerOfTicket(ticketId);
         return ticketsService.findById(ticketId);
     }
@@ -55,7 +55,7 @@ public class TicketsController {
     }
 
     @PutMapping("{id}")
-    public Ticket update(@PathVariable Long id, @Valid @RequestBody Ticket ticket) {
+    public Ticket update(@PathVariable String id, @Valid @RequestBody Ticket ticket) {
         if (!id.equals(ticket.getId())) {
             throw new InvalidEntityException(
                     String.format("Entity ID='%s' is different from URL resource ID='%s'", ticket.getId(), id));
@@ -65,12 +65,12 @@ public class TicketsController {
     }
 
     @DeleteMapping("{id}")
-    public Ticket remove(@PathVariable Long id) {
+    public Ticket remove(@PathVariable String id) {
         validateIsOwnerOfTicket(id);
         return ticketsService.remove(id);
     }
 
-    private void validateIsOwnerOfTicket(Long ticketId) {
+    private void validateIsOwnerOfTicket(String ticketId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Ticket ticket = ticketsService.findById(ticketId);
         User currentUser = usersService.findByUsername(authentication.getName());

@@ -21,7 +21,7 @@ public class RoutesService {
         return repo.findAllByCompanyId(companyId);
     }
 
-    public Route findById(Long routeId) {
+    public Route findById(String routeId) {
         return repo.findById(routeId).orElseThrow(() -> new NonexisitngEntityException(
                 String.format("Route with ID='%s' does not exist.", routeId)));
     }
@@ -39,7 +39,7 @@ public class RoutesService {
         return repo.save(route);
     }
 
-    public Route remove(Long routeId) {
+    public Route remove(String routeId) {
         Optional<Route> old = repo.findById(routeId);
         log.info("!!!!!! RouteID = " + routeId);
         if (!old.isPresent()) {

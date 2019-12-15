@@ -15,10 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 public class Ticket {
     @Id
-    private Long id;
+    private String id;
     private String startPoint;
     private String endPoint;
-    private List<String> stops;
+    private String stops;
     private String duration;
     private Double price;
     private String distance;

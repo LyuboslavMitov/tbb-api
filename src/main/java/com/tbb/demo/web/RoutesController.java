@@ -33,7 +33,7 @@ public class RoutesController {
     }
 
     @GetMapping("{id}")
-    public Route getRouteById(@PathVariable("id") Long routeId) {
+    public Route getRouteById(@PathVariable("id") String routeId) {
         validateIsOwnerOfRoute(routeId);
         return routesService.findById(routeId);
     }
@@ -48,6 +48,8 @@ public class RoutesController {
             throw new InvalidEntityException(message);
         }
         route.setCompany(principal.getName());
+        usersService.findByUsername(principal.getName());
+        route.setCompanyId(usersService.findByUsername(principal.getName()).getId());
         Route created = routesService.add(route);
         return ResponseEntity.created(
                 ServletUriComponentsBuilder.fromCurrentRequest().pathSegment("{id}").build(created.getId()))
@@ -55,7 +57,7 @@ public class RoutesController {
     }
 
     @PutMapping("{id}")
-    public Route update(@PathVariable Long id, @Valid @RequestBody Route route) {
+    public Route update(@PathVariable String id, @Valid @RequestBody Route route) {
         if (!id.equals(route.getId())) {
             throw new InvalidEntityException(
                     String.format("Entity ID='%s' is different from URL resource ID='%s'", route.getId(), id));
@@ -65,12 +67,12 @@ public class RoutesController {
     }
 
     @DeleteMapping("{id}")
-    public Route remove(@PathVariable Long id) {
+    public Route remove(@PathVariable String id) {
         validateIsOwnerOfRoute(id);
         return routesService.remove(id);
     }
 
-    private void validateIsOwnerOfRoute(Long routeId) {
+    private void validateIsOwnerOfRoute(String routeId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Route route = routesService.findById(routeId);
         User user = usersService.findByUsername(authentication.getName());
