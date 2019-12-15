@@ -29,6 +29,9 @@ public class RoutesController {
     @GetMapping
     public List<Route> getRoutes(Principal principal) {
         User user = usersService.findByUsername(principal.getName());
+        if(user.getRoles().contains("ROLE_TRAVELER")) {
+            return routesService.findAllRoutes();
+        }
         return routesService.findAllCompanyRoutes(user.getId());
     }
 

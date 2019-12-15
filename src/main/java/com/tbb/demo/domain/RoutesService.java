@@ -21,6 +21,8 @@ public class RoutesService {
         return repo.findAllByCompanyId(companyId);
     }
 
+    public List<Route> findAllRoutes() {return repo.findAll();}
+
     public Route findById(String routeId) {
         return repo.findById(routeId).orElseThrow(() -> new NonexisitngEntityException(
                 String.format("Route with ID='%s' does not exist.", routeId)));
