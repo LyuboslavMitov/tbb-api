@@ -56,6 +56,7 @@ public class TicketsController {
             throw new InvalidEntityException(message);
         }
         ticket.setCompany(principal.getName());
+        ticket.setUserId(usersService.findByUsername(principal.getName()).getId());
         Ticket created = ticketsService.add(ticket);
         return ResponseEntity.created(
                 ServletUriComponentsBuilder.fromCurrentRequest().pathSegment("{id}").build(created.getId()))
